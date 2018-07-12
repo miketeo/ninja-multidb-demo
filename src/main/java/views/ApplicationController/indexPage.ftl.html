@@ -1,0 +1,21 @@
+<#import "../layout/defaultLayout.ftl.html" as layout> 
+<@layout.myLayout "Login">    
+
+<div class="panel panel-default" style="max-width:300px; margin: 100px auto">
+  <div class="panel-heading">
+    <h3 class="panel-title">Login</h3>
+  </div>
+  <div class="panel-body">
+    <form method="POST" action="${reverseRoute('controllers.ApplicationController','login')}">
+      <div class="form-group">
+        <label for="loginField">login ID</label>
+        <input class="form-control" id="loginField" type="text" name="loginID" placeholder="Enter login ID" aria-describedby="loginHelp" required>
+        <small class="help-block" id="loginHelp">For demo purposes, fill in any ID in the above field. If the ID does not exists in the user database, it will be created automatically.</small>
+      </div>
+      
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+  </div>
+</div>
+
+</@layout.myLayout>

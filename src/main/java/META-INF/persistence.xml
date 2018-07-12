@@ -1,0 +1,74 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+    version="2.0">
+    
+    <persistence-unit name="userdb_unit" transaction-type="RESOURCE_LOCAL">
+        <provider>multidbsources.MultiDBPersistenceProvider</provider>
+        <properties>
+            <property name="javax.persistence.provider" value="multidbsources.MultiDBPersistenceProvider" />
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+            
+            <!-- you may want to enable the ddl if you do not use migrations. -->
+            <!--  <property name="hibernate.hbm2ddl.auto" value="create" /> -->
+            <property name="hibernate.show_sql" value="false" />
+            <property name="hibernate.format_sql" value="false" />
+            
+            <!-- Connection Pooling settings -->
+            
+            <!-- We use HikariCP instead of C3P0. You can switch back if you want -->
+            <!--
+            <property name="hibernate.connection.provider_class" value="org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider" /> 
+            <property name="hibernate.c3p0.max_size" value="10" />
+            <property name="hibernate.c3p0.min_size" value="0" />
+            <property name="hibernate.c3p0.acquire_increment" value="1" />
+            <property name="hibernate.c3p0.idle_test_period" value="300" />
+            <property name="hibernate.c3p0.max_statements" value="0" />
+            <property name="hibernate.c3p0.timeout" value="100" />
+            -->
+                 
+            <property name="hibernate.connection.provider_class" value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider" />
+            <property name="hibernate.hikari.minimumIdle" value="0" />
+            <property name="hibernate.hikari.maximumPoolSize" value="10" />
+            <property name="hibernate.hikari.idleTimeout" value="30000" />
+                        
+            <property name="hibernate.connection.autocommit" value="false"/>
+        </properties>
+    </persistence-unit>
+    
+    <persistence-unit name="taskdb_unit" transaction-type="RESOURCE_LOCAL">
+        <provider>multidbsources.MultiDBPersistenceProvider</provider>
+        <properties>
+            <property name="javax.persistence.provider" value="multidbsources.MultiDBPersistenceProvider" />
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+            
+            <!-- you may want to enable the ddl if you do not use migrations. -->
+            <!--  <property name="hibernate.hbm2ddl.auto" value="create" /> -->
+            <property name="hibernate.show_sql" value="false" />
+            <property name="hibernate.format_sql" value="false" />
+            
+            <!-- Connection Pooling settings -->
+            
+            <!-- We use HikariCP instead of C3P0. You can switch back if you want -->
+            <!--
+            <property name="hibernate.connection.provider_class" value="org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider" /> 
+            <property name="hibernate.c3p0.max_size" value="10" />
+            <property name="hibernate.c3p0.min_size" value="0" />
+            <property name="hibernate.c3p0.acquire_increment" value="1" />
+            <property name="hibernate.c3p0.idle_test_period" value="300" />
+            <property name="hibernate.c3p0.max_statements" value="0" />
+            <property name="hibernate.c3p0.timeout" value="100" />
+            -->
+                 
+            <property name="hibernate.connection.provider_class" value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider" />
+            <property name="hibernate.hikari.minimumIdle" value="0" />
+            <property name="hibernate.hikari.maximumPoolSize" value="10" />
+            <property name="hibernate.hikari.idleTimeout" value="30000" />
+                        
+            <property name="hibernate.connection.autocommit" value="false"/>
+        </properties>
+    </persistence-unit>
+
+</persistence>

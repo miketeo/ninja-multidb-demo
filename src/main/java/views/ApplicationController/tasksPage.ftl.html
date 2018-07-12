@@ -1,0 +1,131 @@
+<#import "../layout/defaultLayout.ftl.html" as layout> 
+<@layout.myLayout "Tasks">    
+  
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">
+          Task List (${(session.loginID)!''})
+        </a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="${reverseRoute('controllers.ApplicationController','logout')}">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+  
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <div class="row">
+        <p class="text-right"><button type="button" id="addTaskBtn" class="btn btn-primary">Add Task</button></p>
+      </div>
+      <div class="row">
+        <div class="alert alert-info">
+          Use the Add Task button to add some task entries for your account.<br>The task entries will be created under the respective tenant's database.
+        </div>
+      </div>
+      <div class="row">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Description</th>
+              <th>Create Time</th>
+              <th>Completion Time</th>
+              <th style="width:60px"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <#list tasks as task>
+            <tr>
+              <td class="text-right">${task.id}</td>
+              <td>${(task.description)!''}</td>
+              <td>${task.createTime?string.long}</td>
+              <td><#if task.hasCompleted>${task.completionTime?string.long}</#if></td>
+              <td class="text-center"><a href="#" onclick="deleteTask(${task.id});"><i class="fa fa-trash"></i></a></td>
+            </tr>
+            </#list> 
+          </tbody>
+        </table>
+      </div>
+      <div class="row">
+        <div class="panel panel-warning" style="margin-top:60px">
+          <div class="panel-heading">
+            <h3 class="panel-title">Simulate retrieving User instances via TaskEntityManagerProvider</h3>
+          </div>
+          <div class="panel-body">
+            <p>
+              <a href="${reverseRoute('controllers.ApplicationController','simulateFetchingUserModelPage')}" class="btn btn-warning inline-block pull-right" target="_blank" style="margin-left:20px">Simulate Error</a>
+              Entities are registered separately under each EntityManagerProvider via the getModelPackages() method. 
+              <br>Errors like "User is not mapped" will be thrown if you attempt to access an entity that has not registered with the EntityManagerProvider. 
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script type="application/javascript">
+  $(document).ready(function() {
+    $('#addTaskBtn').on('click', function() {
+      BootstrapDialog.show({
+        animate: false,
+        title: 'Add Task',
+        message: 'Task Description:<br><input type="text" class="form-control" placeholder="Please fill in a task description" required>',
+        buttons: [
+          {
+            label: 'Close',
+            action: function(dialogRef) {
+              dialogRef.close();
+            }
+          },
+          {
+            label: 'Add Task',
+            cssClass: 'btn-primary',
+            action: function(dialogRef) {
+              var e = dialogRef.getModalBody().find('input');
+              if (e[0].checkValidity()) {
+                dialogRef.enableButtons();
+                
+                $.ajax({
+                  url: "${reverseRoute('controllers.TaskAPIController','createTask')}",
+                  method: 'POST',
+                  data: { description:e.val() }
+                }).then(
+                  function(ret) {
+                    window.location.reload(true);
+                  }
+                );
+              }
+            }
+          }
+        ]
+      });
+    });
+  });
+  
+  function deleteTask(taskID) {
+    BootstrapDialog.confirm({
+      animate: false,
+      title: 'Delete Task',
+      type: BootstrapDialog.TYPE_WARNING,
+      message: 'Are you sure you want to delete this task?',
+      btnOKLabel: 'Delete',
+      btnOKClass: 'btn-warning',
+      callback: function(result) {
+        if (result) {
+          $.ajax({
+            url: "${reverseRoute('controllers.TaskAPIController','deleteTask','id','12345678')}".replace('12345678',taskID),
+            method: 'DELETE',
+          }).then(
+            function(ret) {
+              window.location.reload(true);
+            }
+          );
+        }
+      }
+    });
+  }
+  </script>
+   
+</@layout.myLayout>
