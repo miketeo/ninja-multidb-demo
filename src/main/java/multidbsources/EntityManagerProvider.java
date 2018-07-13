@@ -67,7 +67,7 @@ public abstract class EntityManagerProvider implements Provider<EntityManager> {
 	}
 
 	void begin() {
-		Preconditions.checkState(entityManager.get()==null, "Work unit has already begin. Looks like you have called UnitOfWork.begin() twice without a balancing call to end() in-between.");
+		Preconditions.checkState(entityManager.get()==null, "Work unit has already begin. Looks like you have called MultiDBSources.beginWorkUnit() twice without a balancing call to endWorkUnit() in-between.");
 		entityManager.set(entityManagerFactory.createEntityManager());
 	}
 
