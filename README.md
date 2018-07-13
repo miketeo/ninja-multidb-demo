@@ -51,9 +51,9 @@ In the demo's code, all multi-db specific comments are prefixed with "*[multidb]
 
 # Customizing your Ninja applications
 
-The following changes need to be made to upgrade your application to support multi-tenant databases.
+The following changes need to be made to upgrade your application to support multiple databases.
 
-1. Comment out ```ninja.migration.run``` and ```ninja.jpa.persistence_unit_name``` (including those that are prefixed with ```%prod```, ```%dev``` or ```%test```). **This is a very important as Ninja web framework's JPA module will interfere with the multi-database workings**.
+1. Comment out ```ninja.migration.run``` and ```ninja.jpa.persistence_unit_name``` properties (including those that are prefixed with ```%prod```, ```%dev``` or ```%test```). **This is very important as Ninja web framework's JPA module will interfere with the multi-database workings**.
 
 2. Copy the ```multidbsources``` package in ```src/main/java``` in this demo to your application's code base.
 
@@ -75,5 +75,5 @@ The following changes need to be made to upgrade your application to support mul
 
 - Do not use @UnitOfWork annotation. It is not supported.
 - Be sure to use *@Transactional* annotation from the *com.google.inject.persist* package.
-- If there are multiple *@Transactional* annotated methods along the path of execution, the transactions across all databases will only be committed after the last *@Transactional* annotated method has returned.
+- If there are multiple *@Transactional* annotated methods along the path of execution, the transactions across all databases will only be committed after all the *@Transactional* annotated methods have returned.
 - You cannot use foreign key annotations like *@ManyToOne* to reference entity classes across different **EntityManagerProvider** classes. For example, the **Task** class in the demo cannot use such annotations to reference to **User** class.
