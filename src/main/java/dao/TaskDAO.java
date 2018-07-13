@@ -108,7 +108,7 @@ public class TaskDAO {
 	public List<User> simulateFetchingUserModel() {
 		EntityManager entityManager = taskEntityManagerProvider.get();
 
-		// This query will fail as User model is in the getModelPackages() returned by TaskEntityManagerProvider.
+		// [multidb]: This query will fail as User model is not in the getModelPackages() returned by TaskEntityManagerProvider.
 		TypedQuery<User> q = entityManager.createQuery("SELECT x FROM User x", User.class);
 		return q.getResultList();
 	}
